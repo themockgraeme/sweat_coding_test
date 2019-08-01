@@ -1,13 +1,15 @@
 package com.kizio.sweat.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kizio.sweat.R;
 import com.kizio.sweat.data.TrainingProgramme;
-import com.kizio.sweat.view.ProgrammeView;
 
 /**
  * Adapter for displaying an array of {@link TrainingProgramme} objects in a {@link RecyclerView}.
@@ -52,7 +54,10 @@ public class ProgrammeAdapter extends RecyclerView.Adapter<ProgrammeViewHolder> 
 	@Override
 	public ProgrammeViewHolder onCreateViewHolder(@NonNull final ViewGroup parent,
 												  final int viewType) {
-		return new ProgrammeViewHolder(new ProgrammeView(this.context));
+		final LayoutInflater inflater = LayoutInflater.from(context);
+		final View view = inflater.inflate(R.layout.view_programme, parent, false);
+
+		return new ProgrammeViewHolder(view);
 	}
 
 	/**
@@ -64,7 +69,7 @@ public class ProgrammeAdapter extends RecyclerView.Adapter<ProgrammeViewHolder> 
 	@Override
 	public void onBindViewHolder(@NonNull final ProgrammeViewHolder holder, final int position) {
 		if (this.programmes != null) {
-			holder.setTrainingProgramme(this.programmes[position]);
+			holder.setTrainingProgramme(this.context, this.programmes[position]);
 		}
 	}
 

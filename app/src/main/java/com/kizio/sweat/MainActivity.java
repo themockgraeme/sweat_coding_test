@@ -1,7 +1,6 @@
 package com.kizio.sweat;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,7 +59,5 @@ public class MainActivity extends AppCompatActivity {
 		if (adapter != null) {
 			adapter.notifyDataSetChanged();
 		}
-
-		Toast.makeText(this, "Downloaded", Toast.LENGTH_SHORT).show();
 	}
 }
