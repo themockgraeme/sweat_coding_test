@@ -1,6 +1,8 @@
 <resources>
 	<string name="app_name">Sweat Coding Test</string>
 
+	<string name="sweat">Sweat</string>
+
 	<!-- Captions for the programme card. -->
 	<string name="weight_loss">Weight Loss</string>
 	<string name="muscle">Muscle</string>

@@ -3,6 +3,7 @@ package com.kizio.sweat;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
 		final TrainingProgramme[] programmes = DataFactory.getTrainingProgrammes(this);
 		final ProgrammeAdapter adapter = new ProgrammeAdapter(this, programmes);
+		final Toolbar toolbar = findViewById(R.id.main_toolbar);
+
+		setSupportActionBar(toolbar);
 
 		this.programmeList.setLayoutManager(new LinearLayoutManager(this));
 		this.programmeList.setAdapter(adapter);
