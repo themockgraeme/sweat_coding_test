@@ -1,5 +1,7 @@
 package com.kizio.sweat.data;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -33,6 +35,15 @@ public class Trainer {
 	 */
 	@SerializedName("image_url")
 	private String imageAddress;
+
+	/**
+	 * Holds the {@link Bitmap} downloaded from the URL in the {@code imageAddress}.
+	 * <p>
+	 * This is marked as {@code transient} as it's not a part of the JSON, and I had to use the
+	 * keyword as it came up in the technical interview. :)
+	 * </p>
+	 */
+	private transient Bitmap image;
 
 	/**
 	 * Sets the ID value.
@@ -104,5 +115,23 @@ public class Trainer {
 	 */
 	public String getImageAddress() {
 		return this.imageAddress;
+	}
+
+	/**
+	 * Sets the trainer's portrait image.
+	 *
+	 * @param anImage The {@link Bitmap} containing the portrait
+	 */
+	public void setImage(final Bitmap anImage) {
+		this.image = anImage;
+	}
+
+	/**
+	 * Gets the trainer's portrait image.
+	 *
+	 * @return The {@link Bitmap} containing the portrait
+	 */
+	public Bitmap getImage() {
+		return this.image;
 	}
 }

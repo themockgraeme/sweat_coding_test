@@ -1,3 +1,12 @@
 <resources>
 	<string name="app_name">Sweat Coding Test</string>
+
+	<!-- Captions for the programme card. -->
+	<string name="weight_loss">Weight Loss</string>
+	<string name="muscle">Muscle</string>
+	<string name="strength">Strength</string>
+	<string name="flexibility">Flexibility</string>
+	<string name="trainer_portrait">Photograph of trainer</string>
+
+	<string name="with_trainer">With %1$s</string>
 </resources>
