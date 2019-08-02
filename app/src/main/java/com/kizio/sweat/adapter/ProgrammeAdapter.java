@@ -1,6 +1,7 @@
 package com.kizio.sweat.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kizio.sweat.R;
+import com.kizio.sweat.data.Trainer;
 import com.kizio.sweat.data.TrainingProgramme;
+import com.kizio.sweat.task.ImageDownloadListener;
 
 /**
  * Adapter for displaying an array of {@link TrainingProgramme} objects in a {@link RecyclerView}.
@@ -17,7 +20,7 @@ import com.kizio.sweat.data.TrainingProgramme;
  * @author Graeme Sutherland
  * @since 01/08/2019
  */
-public class ProgrammeAdapter extends RecyclerView.Adapter<ProgrammeViewHolder> {
+public class ProgrammeAdapter extends RecyclerView.Adapter<ProgrammeViewHolder> implements ImageDownloadListener {
 
 	/**
 	 * The {@link Context} the adapter is being displayed in.
@@ -81,5 +84,24 @@ public class ProgrammeAdapter extends RecyclerView.Adapter<ProgrammeViewHolder> 
 	@Override
 	public int getItemCount() {
 		return this.programmes != null ? this.programmes.length : 0;
+	}
+
+	/**
+	 * Invoked when a {@link Bitmap} is downloaded.
+	 *
+	 * @param url   The URL {@code String} for the downloaded image
+	 * @param image The downloaded {@link Bitmap}
+	 */
+	@Override
+	public void onImageDownloaded(String url, Bitmap image) {
+		for (final TrainingProgramme programme : programmes) {
+			final Trainer trainer = programme.getTrainer();
+
+			if (url.equals(trainer.getImageAddress())) {
+				trainer.setImage(image);
+			}
+		}
+
+		notifyDataSetChanged();
 	}
 }

@@ -6,70 +6,129 @@ import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 
-import com.kizio.sweat.MainActivity;
 import com.kizio.sweat.data.Trainer;
+import com.kizio.sweat.data.TrainingProgramme;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Downloads the trainer images from the web.
- * <p>
- * This isn't an optimal piece of code, but I'm going for simplicity here. It should call an update
- * for each downloaded bitmap, and cache images so that it doesn't do a network call more than once.
- * </p>
+ *
  * @author Graeme Sutherland
  * @since 01/08/2019
  */
-public class ImageDownloadTask extends AsyncTask<Trainer, Void, Void> {
+public class ImageDownloadTask extends AsyncTask<TrainingProgramme, Void, List<ImageDownloadTask.Result>> {
 
 	/**
-	 * Holds a {@link WeakReference} to the {@link MainActivity} class to prevent it from being
-	 * leaked.
+	 * Holds the result of a download from the web.
 	 */
-	private final WeakReference<MainActivity> activityReference;
+	static class Result {
+		/**
+		 * The URL {@code String} that was used to download the image from the web.
+		 */
+		private final String url;
+
+		/**
+		 * The downloaded {@link Bitmap}.
+		 */
+		private final Bitmap image;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param aUrl The URL {@code String} that was used to download the image
+		 * @param anImage The downloaded {@link Bitmap}
+		 */
+		Result(final String aUrl, final Bitmap anImage) {
+			super();
+
+			this.url = aUrl;
+			this.image = anImage;
+		}
+
+		/**
+		 * Gets the URL {@code String}.
+		 *
+		 * @return The URL {@code String}
+		 */
+		String getUrl() {
+			return this.url;
+		}
+
+		/**
+		 * Gets the downloaded {@link Bitmap}.
+		 * @return The downloaded {@link Bitmap}
+		 */
+		Bitmap getImage() {
+			return this.image;
+		}
+	}
+
+	/**
+	 * Holds a {@link WeakReference} to the {@link ImageDownloadListener} class to prevent it from
+	 * being leaked.
+	 */
+	private final WeakReference<ImageDownloadListener> listenerReference;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param activity The {@link MainActivity} to call back to
+	 * @param listener The {@link ImageDownloadListener} to call back to
 	 */
-	public ImageDownloadTask(final MainActivity activity) {
+	public ImageDownloadTask(final ImageDownloadListener listener) {
 		super();
 
-		this.activityReference = new WeakReference<>(activity);
+		this.listenerReference = new WeakReference<>(listener);
 	}
 
 	/**
 	 * Runs in the background thread and downloads the {@link Trainer} portrait {@link Bitmap}
 	 * images from the web.
 	 *
-	 * @param trainers An array of {@link Trainer} objects
-	 * @return {@code null}
+	 * @param programmes An array of {@link TrainingProgramme} objects
+	 * @return A {@link List} of bitmap and URL pairs
 	 */
 	@Override
-	protected Void doInBackground(final Trainer... trainers) {
-		for (final Trainer trainer : trainers) {
-			final String url = trainer.getImageAddress();
-			final Bitmap bitmap = getBitmapFromUrl(url);
+	protected List<ImageDownloadTask.Result> doInBackground(final TrainingProgramme... programmes) {
+		final List<ImageDownloadTask.Result> results = new ArrayList<>();
+		final Set<String> downloadedUrls = new HashSet<>();
 
-			trainer.setImage(bitmap);
+		for (final TrainingProgramme programme : programmes) {
+			final Trainer trainer = programme.getTrainer();
+			final String url = trainer.getImageAddress();
+
+			if (!downloadedUrls.contains(url)) {
+				final Bitmap bitmap = getBitmapFromUrl(url);
+
+				downloadedUrls.add(url);
+				results.add(new ImageDownloadTask.Result(url, bitmap));
+			}
 		}
 
-		return null;
+		return results;
 	}
 
+	/**
+	 * Handles the results when the download process has completed.
+	 *
+	 * @param results The URL / image pair for each download
+	 */
 	@Override
-	protected void onPostExecute(final Void aVoid) {
-		super.onPostExecute(aVoid);
+	protected void onPostExecute(final List<ImageDownloadTask.Result> results) {
+		final ImageDownloadListener listener = this.listenerReference.get();
 
-		final MainActivity activity = this.activityReference.get();
-
-		if (activity != null) {
-			activity.onDownloadComplete();
+		if (listener != null) {
+			for (final ImageDownloadTask.Result result : results) {
+				listener.onImageDownloaded(result.getUrl(), result.getImage());
+			}
 		}
 	}
 
