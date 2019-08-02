@@ -10,13 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * @author Graeme Sutherland
  * @since 21/07/2019
  */
-public class Trainer {
-
-	/**
-	 * Internal ID for the trainer.
-	 */
-	@SerializedName("id")
-	private int id;
+public class Trainer extends AbstractId {
 
 	/**
 	 * The code name {@code String} for the trainer.
@@ -44,24 +38,6 @@ public class Trainer {
 	 * </p>
 	 */
 	private transient Bitmap image;
-
-	/**
-	 * Sets the ID value.
-	 *
-	 * @param anId An {@code int} ID code
-	 */
-	public void setId(final int anId) {
-		this.id = anId;
-	}
-
-	/**
-	 * Gets the ID value.
-	 *
-	 * @return An {@code int} ID code
-	 */
-	public int getId() {
-		return this.id;
-	}
 
 	/**
 	 * Sets the code name for the trainer.

@@ -9,13 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * @author Graeme Sutherland
  * @since 21/07/2019
  */
-public class Attribute {
-
-	/**
-	 * Internal ID for the attribute.
-	 */
-	@SerializedName("id")
-	private int id;
+public class Attribute extends AbstractId {
 
 	/**
 	 * A code name {@code String} for the attribute.
@@ -41,24 +35,6 @@ public class Attribute {
 	 */
 	@SerializedName("total")
 	private float total;
-
-	/**
-	 * Sets the ID value.
-	 *
-	 * @param anId An {@code int} ID code
-	 */
-	public void setId(final int anId) {
-		this.id = anId;
-	}
-
-	/**
-	 * Gets the ID value.
-	 *
-	 * @return An {@code int} ID code
-	 */
-	public int getId() {
-		return this.id;
-	}
 
 	/**
 	 * Sets the code name for the attribute.

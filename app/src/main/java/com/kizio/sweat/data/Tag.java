@@ -8,37 +8,13 @@ import com.google.gson.annotations.SerializedName;
  * @author Graeme Sutherland
  * @since 21/07/2019
  */
-public class Tag {
-
-	/**
-	 * Internal ID for the trainer.
-	 */
-	@SerializedName("id")
-	private int id;
+public class Tag extends AbstractId {
 
 	/**
 	 * The display name or value {@code String} for the tag.
 	 */
 	@SerializedName("name")
 	private String name;
-
-	/**
-	 * Sets the ID value.
-	 *
-	 * @param anId An {@code int} ID code
-	 */
-	public void setId(final int anId) {
-		this.id = anId;
-	}
-
-	/**
-	 * Gets the ID value.
-	 *
-	 * @return An {@code int} ID code
-	 */
-	public int getId() {
-		return this.id;
-	}
 
 	/**
 	 * Sets the displayed name for the tag.

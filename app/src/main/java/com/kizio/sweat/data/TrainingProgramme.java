@@ -2,6 +2,9 @@ package com.kizio.sweat.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
+import java.util.TreeSet;
+
 /**
  * Represents a training programme downloaded from the Sweat service.
  * <p>
@@ -11,13 +14,7 @@ import com.google.gson.annotations.SerializedName;
  * @author Graeme Sutherland
  * @since 21/07/2019
  */
-public class TrainingProgramme {
-
-	/**
-	 * Internal ID for the attribute.
-	 */
-	@SerializedName("id")
-	private int id;
+public class TrainingProgramme extends AbstractId {
 
 	/**
 	 * Acronym {@code String} for the programme.
@@ -59,31 +56,13 @@ public class TrainingProgramme {
 	 * The {@link Attribute} objects used to store the programme's characteristics.
 	 */
 	@SerializedName("attributes")
-	private Attribute[] attributes;
+	private TreeSet<Attribute> attributes;
 
 	/**
 	 * The {@link Tag} objects used to store more details for the programme.
 	 */
 	@SerializedName("tags")
-	private Tag[] tags;
-
-	/**
-	 * Sets the ID value.
-	 *
-	 * @param anId An {@code int} ID code
-	 */
-	public void setId(final int anId) {
-		this.id = anId;
-	}
-
-	/**
-	 * Gets the ID value.
-	 *
-	 * @return An {@code int} ID code
-	 */
-	public int getId() {
-		return this.id;
-	}
+	private TreeSet<Tag> tags;
 
 	/**
 	 * Sets the acronym for the programme.
@@ -199,7 +178,9 @@ public class TrainingProgramme {
 	 * @param attributesArray The {@link Attribute} array for the programme
 	 */
 	public void setAttributes(final Attribute[] attributesArray) {
-		this.attributes = attributesArray;
+		this.attributes = new TreeSet<>();
+
+		this.attributes.addAll(Arrays.asList(attributesArray));
 	}
 
 	/**
@@ -208,7 +189,9 @@ public class TrainingProgramme {
 	 * @return The {@link Attribute} array for the programme
 	 */
 	public Attribute[] getAttributes() {
-		return this.attributes;
+		final Attribute[] attibuteArray = new Attribute[0];
+
+		return this.attributes != null ? this.attributes.toArray(attibuteArray) : attibuteArray;
 	}
 
 	/**
@@ -217,7 +200,9 @@ public class TrainingProgramme {
 	 * @param tagsArray The {@link Tag} array for the programme
 	 */
 	public void setTags(final Tag[] tagsArray) {
-		this.tags = tagsArray;
+		this.tags = new TreeSet<>();
+
+		this.tags.addAll(Arrays.asList(tagsArray));
 	}
 
 	/**
@@ -226,6 +211,8 @@ public class TrainingProgramme {
 	 * @return The {@link Tag} array for the programme
 	 */
 	public Tag[] getTags() {
-		return this.tags;
+		final Tag[] tagsArray = new Tag[0];
+
+		return this.attributes != null ? this.tags.toArray(tagsArray) : tagsArray;
 	}
 }
